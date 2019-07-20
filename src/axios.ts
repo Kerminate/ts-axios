@@ -1,8 +1,8 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types';
 import xhr from './xhr';
 import { buildURL } from './helpers/url';
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/headers'
+import { transformRequest, transformResponse } from './helpers/data';
+import { processHeaders } from './helpers/headers';
 
 function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config);
@@ -20,7 +20,6 @@ function processConfig(config: AxiosRequestConfig): void {
 function transformURL(config: AxiosRequestConfig): string {
   const { url, params } = config;
   return buildURL(url, params);
-
 }
 
 function transformRequestData(config: AxiosRequestConfig): any {
@@ -37,4 +36,4 @@ function transformResponseData(res: AxiosResponse): AxiosResponse {
   return res;
 }
 
-export default axios
+export default axios;
