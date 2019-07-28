@@ -59,9 +59,9 @@ export interface Axios {
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
   head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
   options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
-  post<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
-  put<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
-  patch<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 }
 
 export interface AxiosInstance extends Axios {
@@ -96,6 +96,7 @@ export interface AxiosTransformer {
 export interface CancelToken {
   promise: Promise<Cancel>;
   reason?: Cancel;
+  throwIfRequested(): void;
 }
 
 export interface Canceler {
