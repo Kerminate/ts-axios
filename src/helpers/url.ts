@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from './util';
+import { isDate, isPlainObject, isURLSearchParams } from './util';
 
 interface URLOrigin {
   protocol: string;
@@ -17,37 +17,49 @@ function encode(val: string): string {
     .replace(/%5D/gi, ']');
 }
 
-export function buildURL(url: string, paramas?: any): string {
+export function buildURL(
+  url: string,
+  paramas?: any,
+  paramsSerializer?: (params: any) => string
+): string {
   if (!paramas) {
     return url;
   }
 
-  const parts: string[] = [];
-  Object.keys(paramas).forEach(key => {
-    const val = paramas[key];
-    if (val === null || typeof val === 'undefined') {
-      return;
-    }
-    let values = [];
-    if (Array.isArray(val)) {
-      values = val;
-      key += '[]';
-    } else {
-      values = [val];
-    }
-    values.forEach(val => {
-      if (isDate(val)) {
-        val = val.toISOString();
-      } else {
-        if (isPlainObject(val)) {
-          val = JSON.stringify(val);
-        }
-        parts.push(`${encode(key)}=${encode(val)}`);
+  let serializeParams;
+  if (paramsSerializer) {
+    serializeParams = paramsSerializer(paramas);
+  } else if (isURLSearchParams(paramas)) {
+    serializeParams = paramas.toString();
+  } else {
+    const parts: string[] = [];
+    Object.keys(paramas).forEach(key => {
+      const val = paramas[key];
+      if (val === null || typeof val === 'undefined') {
+        return;
       }
+      let values = [];
+      if (Array.isArray(val)) {
+        values = val;
+        key += '[]';
+      } else {
+        values = [val];
+      }
+      values.forEach(val => {
+        if (isDate(val)) {
+          val = val.toISOString();
+        } else {
+          if (isPlainObject(val)) {
+            val = JSON.stringify(val);
+          }
+          parts.push(`${encode(key)}=${encode(val)}`);
+        }
+      });
     });
-  });
 
-  let serializeParams = parts.join('&');
+    serializeParams = parts.join('&');
+  }
+
   if (serializeParams) {
     const markIndex = url.indexOf('#');
     if (markIndex !== -1) {
