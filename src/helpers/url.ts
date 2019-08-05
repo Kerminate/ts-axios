@@ -70,6 +70,17 @@ export function buildURL(
   return url;
 }
 
+export function isAbsoluteURL(url: string): boolean {
+  const regExp = /(^[a-z][a-z\d\+\-\.]*:)?\/\//i;
+  return regExp.test(url);
+}
+
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+}
+
 export function isURLSameOrigin(requestURL: string): boolean {
   const parsedOrigin = resolveURL(requestURL);
   return (
