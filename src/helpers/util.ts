@@ -1,5 +1,11 @@
+/*
+ * @Description: 
+ * @Author: Kerminate
+ * @Date: 2019-06-02 10:11:31
+ */
 const toString = Object.prototype.toString;
 
+// TODO:
 export function isDate(val: any): val is Date {
   return toString.call(val) === '[object Date]';
 }
