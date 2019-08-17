@@ -48,12 +48,10 @@ export function buildURL(
       values.forEach(val => {
         if (isDate(val)) {
           val = val.toISOString();
-        } else {
-          if (isPlainObject(val)) {
-            val = JSON.stringify(val);
-          }
-          parts.push(`${encode(key)}=${encode(val)}`);
+        } else if (isPlainObject(val)) {
+          val = JSON.stringify(val);
         }
+        parts.push(`${encode(key)}=${encode(val)}`);
       });
     });
 
@@ -71,7 +69,7 @@ export function buildURL(
 }
 
 export function isAbsoluteURL(url: string): boolean {
-  const regExp = /(^[a-z][a-z\d\+\-\.]*:)?\/\//i;
+  const regExp = /^([a-z][a-z\d\+\-\.]*:)?\/\//i;
   return regExp.test(url);
 }
 
