@@ -128,7 +128,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (!validateStatus || validateStatus(response.status)) {
         resolve(response);
       } else {
-        reject(new Error(`Request failed with status code ${response.status}`));
         reject(
           createError(
             `Request failed with status code ${response.status}`,

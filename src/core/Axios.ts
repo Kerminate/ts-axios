@@ -43,6 +43,8 @@ export default class Axios {
     }
 
     config = mergeConfig(this.defaults, config);
+    // TODO: 源码里没转成小写，待确认
+    config.method = config.method.toLowerCase();
 
     const chain: PromiseChain<any>[] = [
       {
