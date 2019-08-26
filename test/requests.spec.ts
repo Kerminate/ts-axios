@@ -1,6 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from '../src/index';
 import { getAjaxRequest } from './helper';
-import { request } from 'http';
 
 describe('requests', () => {
   beforeEach(() => {
@@ -236,5 +235,37 @@ describe('requests', () => {
     return getAjaxRequest().then(request => {
       expect(request.requestHeaders['Content-Type']).toBe('application/json');
     });
+  });
+
+  test('should support array buffer response', done => {
+    let response: AxiosResponse;
+
+    function str2ab(str: string) {
+      const buff = new ArrayBuffer(str.length * 2);
+      const view = new Uint16Array(buff);
+      for (let i = 0; i < str.length; i++) {
+        view[i] = str.charCodeAt(i);
+      }
+      return buff;
+    }
+
+    axios('/foo', {
+      responseType: 'arraybuffer'
+    }).then(data => {
+      response = data;
+    });
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 200,
+        // @ts-ignore
+        response: str2ab('Hello world')
+      });
+    });
+
+    setTimeout(() => {
+      expect(response.data.byteLength).toBe(22);
+      done();
+    }, 100);
   });
 });

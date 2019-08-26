@@ -1,12 +1,13 @@
-import { AxiosRequestConfig, AxiosResponse } from '../types'
+import { AxiosRequestConfig, AxiosResponse } from '../types';
 
 export class AxiosError extends Error {
-  isAxiosError: boolean
-  config: AxiosRequestConfig
-  code?: string | null
-  request?: any
-  response?: AxiosResponse
+  isAxiosError: boolean;
+  config: AxiosRequestConfig;
+  code?: string | null;
+  request?: any;
+  response?: AxiosResponse;
 
+  // istanbul ignore next
   constructor(
     message: string,
     config: AxiosRequestConfig,
@@ -34,6 +35,6 @@ export function createError(
   request?: any,
   response?: AxiosResponse
 ) {
-  const error = new AxiosError(message, config, code, request, response)
+  const error = new AxiosError(message, config, code, request, response);
   return error;
 }
